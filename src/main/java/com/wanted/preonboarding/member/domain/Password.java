@@ -18,8 +18,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public final class Password {
 
-    private static final int MIN_LENGTH = 8;
-    private static final String TOO_SHORT_MESSAGE = String.format("비밀번호는 %d자 이상이어야 합니다.", MIN_LENGTH);
+    public static final int MIN_LENGTH = 8;
+    public static final String TOO_SHORT_MESSAGE = "비밀번호는 " + MIN_LENGTH + "자 이상이어야 합니다.";
 
     @Column(name = "password")
     private String value;

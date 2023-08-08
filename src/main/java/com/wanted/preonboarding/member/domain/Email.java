@@ -14,9 +14,10 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Email {
 
-    private static final String REGEX = "^.*@.*$";
+    public static final String REGEX = "^.*@.*$";
+    public static final String INVALID_FORMAT_MESSAGE = "이메일은 @를 포함해야 합니다.";
+
     private static final Pattern PATTERN = Pattern.compile(REGEX);
-    private static final String INVALID_FORMAT_MESSAGE = "이메일은 @를 포함해야 합니다.";
 
     @Column(name = "email")
     private String value;
