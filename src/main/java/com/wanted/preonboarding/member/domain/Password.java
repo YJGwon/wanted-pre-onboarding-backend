@@ -1,13 +1,19 @@
 package com.wanted.preonboarding.member.domain;
 
+import static lombok.AccessLevel.PROTECTED;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Embeddable
 @AllArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 @Getter
 public final class Password {
 
@@ -16,6 +22,10 @@ public final class Password {
 
     public static Password fromPlainText(final String plainText) {
         return new Password(encrypt(plainText));
+    }
+
+    public boolean isSamePassword(final String plainText) {
+        return value.equals(encrypt(plainText));
     }
 
     private static String encrypt(final String plainText) {
@@ -39,9 +49,5 @@ public final class Password {
         } catch (final NoSuchAlgorithmException e) {
             throw new RuntimeException(e.getMessage());
         }
-    }
-
-    public boolean isSamePassword(final String plainText) {
-        return value.equals(encrypt(plainText));
     }
 }
