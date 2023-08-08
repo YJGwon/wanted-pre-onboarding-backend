@@ -1,0 +1,16 @@
+spring:
+  profiles:
+    active: local
+  # jpa
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: validate
+
+# disable swagger default url
+springdoc:
+  swagger-ui:
+    disable-swagger-default-url: true
+  cache.disabled: true
