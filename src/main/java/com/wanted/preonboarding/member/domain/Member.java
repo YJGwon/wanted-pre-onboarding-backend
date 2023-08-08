@@ -24,4 +24,8 @@ public class Member {
 
     private Email email;
     private Password password;
+
+    public static Member ofNew(final String email, final String password) {
+        return new Member(null, new Email(email), Password.fromPlainText(password));
+    }
 }
