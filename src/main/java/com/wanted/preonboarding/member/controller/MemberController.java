@@ -1,5 +1,7 @@
 package com.wanted.preonboarding.member.controller;
 
+import com.wanted.preonboarding.member.dto.LoginRequest;
+import com.wanted.preonboarding.member.dto.LoginResponse;
 import com.wanted.preonboarding.member.dto.MemberRequest;
 import com.wanted.preonboarding.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,5 +34,15 @@ public class MemberController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void create(@RequestBody @Valid MemberRequest request) {
         memberService.create(request);
+    }
+
+    @Operation(summary = "사용자 로그인")
+    @ApiResponse(
+            responseCode = "400", description = "유효하지 않거나 잘못된 이메일 또는 비밀번호",
+            content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+    )
+    @PostMapping("/login")
+    public LoginResponse login(@RequestBody @Valid LoginRequest request) {
+        return memberService.login(request);
     }
 }
