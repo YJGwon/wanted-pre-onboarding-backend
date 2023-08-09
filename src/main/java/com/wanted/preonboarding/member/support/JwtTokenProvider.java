@@ -1,6 +1,10 @@
 package com.wanted.preonboarding.member.support;
 
 import com.wanted.preonboarding.member.domain.TokenProvider;
+import com.wanted.preonboarding.member.exception.AuthenticationException;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -34,5 +38,21 @@ public class JwtTokenProvider implements TokenProvider {
                 .setExpiration(validity)
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    @Override
+    public void validate(final String token) {
+        try {
+            parseClaimsJws(token);
+        } catch (final JwtException | IllegalArgumentException e) {
+            throw new AuthenticationException("유효하지 않은 토큰입니다.");
+        }
+    }
+
+    private Jws<Claims> parseClaimsJws(final String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token);
     }
 }
