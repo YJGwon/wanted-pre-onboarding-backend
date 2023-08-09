@@ -2,6 +2,7 @@ package com.wanted.preonboarding.member.domain;
 
 import static lombok.AccessLevel.PROTECTED;
 
+import com.wanted.preonboarding.member.exception.LoginFailedException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,5 +28,11 @@ public class Member {
 
     public static Member ofNew(final String email, final String password) {
         return new Member(null, new Email(email), Password.fromPlainText(password));
+    }
+
+    public void checkPassword(final String password) {
+        if (!this.password.isSamePassword(password)) {
+            throw new LoginFailedException();
+        }
     }
 }
