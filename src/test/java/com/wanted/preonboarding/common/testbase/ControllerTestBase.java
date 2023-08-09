@@ -4,6 +4,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wanted.preonboarding.member.domain.TokenProvider;
 import com.wanted.preonboarding.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -14,6 +15,9 @@ import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest
 public abstract class ControllerTestBase {
+
+    @MockBean
+    private TokenProvider tokenProvider;
 
     @MockBean
     protected MemberService memberService;
