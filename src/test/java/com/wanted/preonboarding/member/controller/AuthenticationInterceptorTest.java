@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest(controllers = {AuthTestController.class})
-@Import({JwtTokenProvider.class})
+@Import(JwtTokenProvider.class)
 class AuthenticationInterceptorTest {
 
     @Autowired

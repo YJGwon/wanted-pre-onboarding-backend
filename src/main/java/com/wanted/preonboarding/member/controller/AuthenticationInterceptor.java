@@ -2,13 +2,11 @@ package com.wanted.preonboarding.member.controller;
 
 import com.wanted.preonboarding.member.annotation.Authentication;
 import com.wanted.preonboarding.member.domain.TokenProvider;
-import com.wanted.preonboarding.member.exception.AuthenticationException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -18,9 +16,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthenticationInterceptor implements HandlerInterceptor {
-
-
-    private static final String BEARER_TYPE = "Bearer";
 
     private final TokenProvider tokenProvider;
 
@@ -38,7 +33,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 return true;
             }
 
-            final String token = extractToken(request);
+            final String token = TokenExtractor.extractFromRequestHeader(request);
             tokenProvider.validate(token);
         } catch (ClassCastException e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -56,24 +51,5 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         final boolean hasTypeAnnotation = handlerMethod.getBeanType().isAnnotationPresent(Authentication.class);
         final boolean hasMethodAnnotation = handlerMethod.hasMethodAnnotation(Authentication.class);
         return hasTypeAnnotation || hasMethodAnnotation;
-    }
-
-    private String extractToken(final HttpServletRequest request) {
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        checkNotNull(token);
-        checkType(token);
-        return token.substring(BEARER_TYPE.length() + 1);
-    }
-
-    private void checkNotNull(final String token) {
-        if (token == null) {
-            throw new AuthenticationException("토큰이 존재하지 않습니다.");
-        }
-    }
-
-    private void checkType(final String token) {
-        if (!token.toLowerCase().startsWith(BEARER_TYPE.toLowerCase())) {
-            throw new AuthenticationException("식별할 수 없는 형식의 토큰입니다.");
-        }
     }
 }
