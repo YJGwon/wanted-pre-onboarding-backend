@@ -22,3 +22,7 @@ logging:
     org.hibernate:
       SQL: DEBUG
       orm.jdbc.bind: TRACE
+
+jwt:
+  secret-key: this-is-a-fake-secret-key-only-for-local-environment
+  expire-length: 3600000
