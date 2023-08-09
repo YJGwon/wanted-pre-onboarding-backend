@@ -54,4 +54,18 @@ class JwtTokenProviderTest {
                     .withMessageContaining("유효하지 않은 토큰");
         }
     }
+
+    @DisplayName("토큰에서 subject를 추출한다.")
+    @Test
+    void extractSubject() {
+        // given
+        final String expected = "anySubject";
+        final String token = jwtTokenProvider.create(expected);
+
+        // when
+        final String extractedSubject = jwtTokenProvider.extractSubject(token);
+
+        // then
+        assertThat(extractedSubject).isEqualTo(expected);
+    }
 }

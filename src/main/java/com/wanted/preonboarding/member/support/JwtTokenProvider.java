@@ -49,6 +49,13 @@ public class JwtTokenProvider implements TokenProvider {
         }
     }
 
+    @Override
+    public String extractSubject(final String token) {
+        return parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+    }
+
     private Jws<Claims> parseClaimsJws(final String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)

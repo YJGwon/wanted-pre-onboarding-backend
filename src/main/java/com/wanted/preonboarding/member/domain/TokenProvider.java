@@ -5,4 +5,6 @@ public interface TokenProvider {
     String create(String subject);
 
     void validate(String token);
+
+    String extractSubject(String token);
 }
