@@ -4,6 +4,7 @@ import com.wanted.preonboarding.member.domain.Email;
 import com.wanted.preonboarding.member.domain.Member;
 import com.wanted.preonboarding.member.domain.TokenProvider;
 import com.wanted.preonboarding.member.dto.LoginRequest;
+import com.wanted.preonboarding.member.dto.LoginResponse;
 import com.wanted.preonboarding.member.dto.MemberRequest;
 import com.wanted.preonboarding.member.exception.LoginFailedException;
 import com.wanted.preonboarding.member.repository.MemberRepository;
@@ -25,13 +26,14 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    public String login(final LoginRequest request) {
+    public LoginResponse login(final LoginRequest request) {
         final Email email = new Email(request.email());
 
         final Member member = memberRepository.findByEmail(email)
                 .orElseThrow(LoginFailedException::new);
         member.checkPassword(request.password());
 
-        return tokenProvider.create(member.getId().toString());
+        final String token = tokenProvider.create(member.getId().toString());
+        return new LoginResponse(token);
     }
 }

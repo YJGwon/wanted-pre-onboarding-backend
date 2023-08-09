@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import com.wanted.preonboarding.common.testbase.ServiceTestBase;
 import com.wanted.preonboarding.member.dto.LoginRequest;
+import com.wanted.preonboarding.member.dto.LoginResponse;
 import com.wanted.preonboarding.member.dto.MemberRequest;
 import com.wanted.preonboarding.member.exception.LoginFailedException;
 import org.junit.jupiter.api.DisplayName;
@@ -43,9 +44,10 @@ class MemberServiceTest extends ServiceTestBase {
 
             // when
             final LoginRequest request = new LoginRequest(email, password);
-            final String token = memberService.login(request);
+            final LoginResponse response = memberService.login(request);
 
             // then
+            final String token = response.accessToken();
             assertThat(token.split(".")).allSatisfy((part) -> assertThat(part).isBase64());
         }
 
