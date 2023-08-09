@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.member.domain;
 
+import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.wanted.preonboarding.common.exception.InvalidInputException;
@@ -13,7 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Embeddable
-@AllArgsConstructor
+@AllArgsConstructor(access = PRIVATE)
 @NoArgsConstructor(access = PROTECTED)
 @Getter
 public final class Password {
