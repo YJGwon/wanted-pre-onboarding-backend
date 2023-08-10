@@ -118,4 +118,34 @@ class PostServiceTest extends ServiceTestBase {
                     .withMessageContaining("id");
         }
     }
+
+    @DisplayName("특정 게시글 삭제")
+    @Nested
+    class deleteById {
+
+        @DisplayName("id에 해당하는 특정 게시글을 삭제한다.")
+        @Test
+        void success() {
+            // given
+            final Member writer = dataSetup.saveMember("foo@bar.com", "test1234");
+            final Post savedPost = dataSetup.savePost(writer);
+
+            // when & then
+            assertThatNoException()
+                    .isThrownBy(() -> postService.deleteById(savedPost.getId(), writer.getId()));
+        }
+
+        @DisplayName("id에 해당하는 게시글이 없으면 예외가 발생한다.")
+        @Test
+        void throwsException_whenPostNotFound() {
+            // given
+            final Member member = dataSetup.saveMember("foo@bar.com", "test1234");
+            final long fakeId = 0L;
+
+            // when & then
+            assertThatExceptionOfType(PostNotFoundException.class)
+                    .isThrownBy(() -> postService.deleteById(fakeId, member.getId()))
+                    .withMessageContaining("id");
+        }
+    }
 }

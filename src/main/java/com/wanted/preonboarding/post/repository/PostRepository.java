@@ -13,4 +13,6 @@ public interface PostRepository extends Repository<Post, Long> {
     Page<Post> findAll(Pageable pageable);
 
     Optional<Post> findById(Long id);
+
+    void delete(Post post);
 }

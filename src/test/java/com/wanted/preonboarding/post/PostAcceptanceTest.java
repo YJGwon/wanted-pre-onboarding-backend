@@ -92,4 +92,23 @@ public class PostAcceptanceTest extends AcceptanceTestBase {
         // then
         response.statusCode(HttpStatus.NO_CONTENT.value());
     }
+
+    @DisplayName("id에 해당하는 특정 게시글을 삭제한다.")
+    @Test
+    void deleteById() {
+        // given
+        final String email = "writer@foo.bar";
+        final String password = "write1234";
+        final Member writer = dataSetup.saveMember(email, password);
+        final String token = loginAndGetToken(email, password);
+
+        final Post savedPost = dataSetup.savePost(writer);
+
+        // when
+        final String path = BASE_URI + "/" + savedPost.getId();
+        final ValidatableResponse response = deleteWithToken(path, token);
+
+        // then
+        response.statusCode(HttpStatus.NO_CONTENT.value());
+    }
 }

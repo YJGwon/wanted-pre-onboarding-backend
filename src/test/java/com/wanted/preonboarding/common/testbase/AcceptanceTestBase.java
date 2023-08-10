@@ -64,8 +64,15 @@ public abstract class AcceptanceTestBase {
                 .auth().oauth2(token)
                 .body(body)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
                 .when().put(path)
+                .then().log().all();
+    }
+
+    protected ValidatableResponse deleteWithToken(final String path, final String token) {
+        return RestAssured
+                .given().log().all()
+                .auth().oauth2(token)
+                .when().delete(path)
                 .then().log().all();
     }
 

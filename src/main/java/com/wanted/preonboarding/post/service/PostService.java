@@ -33,18 +33,29 @@ public class PostService {
     }
 
     public PostResponse findById(final Long id) {
-        final Post found = postRepository.findById(id)
-                .orElseThrow(() -> new PostNotFoundException("해당 id의 게시글을 찾을 수 없습니다."));
+        final Post found = findOneById(id);
         return PostResponse.from(found);
     }
 
     @Transactional
     public void modifyById(final Long postId, final Long writerId, final PostRequest request) {
-        final Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new PostNotFoundException("해당 id의 게시글을 찾을 수 없습니다."));
+        final Post post = findOneById(postId);
         post.validateWriter(writerId);
 
         post.changeTitle(request.title());
         post.changeContent(request.content());
+    }
+
+    @Transactional
+    public void deleteById(final Long postId, final Long writerId) {
+        final Post post = findOneById(postId);
+        post.validateWriter(writerId);
+
+        postRepository.delete(post);
+    }
+
+    private Post findOneById(final Long postId) {
+        return postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException("해당 id의 게시글을 찾을 수 없습니다."));
     }
 }

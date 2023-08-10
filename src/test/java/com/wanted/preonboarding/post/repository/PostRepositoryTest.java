@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.post.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import com.wanted.preonboarding.member.domain.Member;
 import com.wanted.preonboarding.member.repository.MemberRepository;
@@ -69,5 +70,17 @@ class PostRepositoryTest {
 
         // then
         assertThat(found.getId()).isEqualTo(expected.getId());
+    }
+
+    @DisplayName("게시글을 삭제한다.")
+    @Test
+    void delete() {
+        // given
+        final Member writer = memberRepository.save(Member.ofNew("test@test.com", "test1234"));
+        final Post savedPost = postRepository.save(Post.ofNew("some title", "some contents...", writer.getId()));
+
+        // when & then
+        assertThatNoException()
+                .isThrownBy(() -> postRepository.delete(savedPost));
     }
 }
