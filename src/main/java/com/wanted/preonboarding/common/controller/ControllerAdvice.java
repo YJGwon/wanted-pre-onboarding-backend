@@ -2,8 +2,10 @@ package com.wanted.preonboarding.common.controller;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 import com.wanted.preonboarding.common.exception.ClientException;
+import com.wanted.preonboarding.common.exception.NotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -20,6 +22,13 @@ public class ControllerAdvice {
     @ExceptionHandler(ClientException.class)
     public ErrorResponse handleClientException(final ClientException e) {
         return ErrorResponse.builder(e, BAD_REQUEST, e.getMessage())
+                .title(e.getTitle())
+                .build();
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ErrorResponse handleNotFoundException(final NotFoundException e) {
+        return ErrorResponse.builder(e, NOT_FOUND, e.getMessage())
                 .title(e.getTitle())
                 .build();
     }

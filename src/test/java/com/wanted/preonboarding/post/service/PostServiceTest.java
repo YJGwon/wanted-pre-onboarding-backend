@@ -1,15 +1,19 @@
 package com.wanted.preonboarding.post.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import com.wanted.preonboarding.common.testbase.ServiceTestBase;
 import com.wanted.preonboarding.member.domain.Member;
 import com.wanted.preonboarding.post.domain.Post;
 import com.wanted.preonboarding.post.dto.PostRequest;
+import com.wanted.preonboarding.post.dto.PostResponse;
 import com.wanted.preonboarding.post.dto.PostSummaryResponse;
 import com.wanted.preonboarding.post.dto.PostsResponse;
+import com.wanted.preonboarding.post.exception.PostNotFoundException;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -50,5 +54,35 @@ class PostServiceTest extends ServiceTestBase {
                 .map(PostSummaryResponse::id)
                 .toList();
         assertThat(foundIds).containsOnly(expected.getId());
+    }
+
+    @DisplayName("특정 게시글 조회")
+    @Nested
+    class findById {
+
+        @DisplayName("id로 특정 게시글을 조회한다.")
+        @Test
+        void success() {
+            // given
+            final Post expected = dataSetup.savePost();
+
+            // when
+            final PostResponse response = postService.findById(expected.getId());
+
+            // then
+            assertThat(response.id()).isEqualTo(expected.getId());
+        }
+
+        @DisplayName("id에 해당하는 게시글이 없으면 예외가 발생한다.")
+        @Test
+        void throwsException_whenPostNotFound() {
+            // given
+            final long fakeId = 0L;
+
+            // when & then
+            assertThatExceptionOfType(PostNotFoundException.class)
+                    .isThrownBy(() -> postService.findById(fakeId))
+                    .withMessageContaining("id");
+        }
     }
 }

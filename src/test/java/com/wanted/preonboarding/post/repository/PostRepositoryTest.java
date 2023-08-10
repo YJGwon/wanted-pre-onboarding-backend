@@ -56,4 +56,18 @@ class PostRepositoryTest {
                 .toList();
         assertThat(foundIds).containsOnly(expected.getId());
     }
+
+    @DisplayName("특정 게시글을 id로 조회한다.")
+    @Test
+    void findById() {
+        // given
+        final Member writer = memberRepository.save(Member.ofNew("test@test.com", "test1234"));
+        final Post expected = postRepository.save(Post.ofNew("some title", "some contents...", writer.getId()));
+
+        // when
+        final Post found = postRepository.findById(expected.getId()).get();
+
+        // then
+        assertThat(found.getId()).isEqualTo(expected.getId());
+    }
 }
