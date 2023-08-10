@@ -58,6 +58,17 @@ public abstract class AcceptanceTestBase {
                 .then().log().all();
     }
 
+    protected ValidatableResponse putWithToken(final String path, final Record body, final String token) {
+        return RestAssured
+                .given().log().all()
+                .auth().oauth2(token)
+                .body(body)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().put(path)
+                .then().log().all();
+    }
+
     protected String loginAndGetToken(final String email, final String password) {
         final LoginRequest request = new LoginRequest(email, password);
         return post("/api/members/login", request)

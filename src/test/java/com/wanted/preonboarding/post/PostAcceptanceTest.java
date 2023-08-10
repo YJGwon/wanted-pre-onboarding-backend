@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.startsWith;
 
 import com.wanted.preonboarding.common.testbase.AcceptanceTestBase;
+import com.wanted.preonboarding.member.domain.Member;
 import com.wanted.preonboarding.post.domain.Post;
 import com.wanted.preonboarding.post.dto.PostRequest;
 import io.restassured.response.ValidatableResponse;
@@ -70,5 +71,25 @@ public class PostAcceptanceTest extends AcceptanceTestBase {
         // then
         response.statusCode(HttpStatus.OK.value())
                 .body("id", equalTo(expected.getId().intValue()));
+    }
+
+    @DisplayName("id에 해당하는 특정 게시글을 수정한다.")
+    @Test
+    void modifyById() {
+        // given
+        final String email = "writer@foo.bar";
+        final String password = "write1234";
+        final Member writer = dataSetup.saveMember(email, password);
+        final String token = loginAndGetToken(email, password);
+
+        final Post savedPost = dataSetup.savePost(writer);
+
+        // when
+        final String path = BASE_URI + "/" + savedPost.getId();
+        final PostRequest request = new PostRequest("수정할 제목", "수정할 본문");
+        final ValidatableResponse response = putWithToken(path, request, token);
+
+        // then
+        response.statusCode(HttpStatus.NO_CONTENT.value());
     }
 }

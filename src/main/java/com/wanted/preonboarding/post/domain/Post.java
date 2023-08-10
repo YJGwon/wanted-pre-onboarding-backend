@@ -3,6 +3,7 @@ package com.wanted.preonboarding.post.domain;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.wanted.preonboarding.post.exception.InvalidPostException;
+import com.wanted.preonboarding.post.exception.NotWriterException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -41,6 +42,22 @@ public class Post {
 
     public static Post ofNew(final String title, final String content, final Long writerId) {
         return new Post(null, title, content, writerId);
+    }
+
+    public void validateWriter(final Long writerId) {
+        if (!this.writerId.equals(writerId)) {
+            throw new NotWriterException();
+        }
+    }
+
+    public void changeTitle(final String title) {
+        validateTitle(title);
+        this.title = title;
+    }
+
+    public void changeContent(final String content) {
+        validateContent(content);
+        this.content = content;
     }
 
     private void validateTitle(final String title) {

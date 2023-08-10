@@ -2,6 +2,7 @@ package com.wanted.preonboarding.post.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import com.wanted.preonboarding.common.testbase.ServiceTestBase;
 import com.wanted.preonboarding.member.domain.Member;
@@ -82,6 +83,38 @@ class PostServiceTest extends ServiceTestBase {
             // when & then
             assertThatExceptionOfType(PostNotFoundException.class)
                     .isThrownBy(() -> postService.findById(fakeId))
+                    .withMessageContaining("id");
+        }
+    }
+
+    @DisplayName("특정 게시글 수정")
+    @Nested
+    class modifyById {
+
+        @DisplayName("id에 해당하는 특정 게시글을 수정한다.")
+        @Test
+        void success() {
+            // given
+            final Member writer = dataSetup.saveMember("foo@bar.com", "test1234");
+            final Post savedPost = dataSetup.savePost(writer);
+
+            // when & then
+            final PostRequest request = new PostRequest("(수정) 수정된 제목", "이건 수정된 본문");
+            assertThatNoException()
+                    .isThrownBy(() -> postService.modifyById(savedPost.getId(), writer.getId(), request));
+        }
+
+        @DisplayName("id에 해당하는 게시글이 없으면 예외가 발생한다.")
+        @Test
+        void throwsException_whenPostNotFound() {
+            // given
+            final Member member = dataSetup.saveMember("foo@bar.com", "test1234");
+            final long fakeId = 0L;
+
+            // when & then
+            final PostRequest request = new PostRequest("(수정) 수정된 제목", "이건 수정된 본문");
+            assertThatExceptionOfType(PostNotFoundException.class)
+                    .isThrownBy(() -> postService.modifyById(fakeId, member.getId(), request))
                     .withMessageContaining("id");
         }
     }

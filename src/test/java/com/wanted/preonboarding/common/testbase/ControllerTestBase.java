@@ -3,6 +3,7 @@ package com.wanted.preonboarding.common.testbase;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -54,6 +55,18 @@ public abstract class ControllerTestBase {
                 .extractSubject("fakeToken");
 
         return mockMvc.perform(post(path)
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer fakeToken")
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print());
+    }
+
+    protected ResultActions performPutWithToken(final String path, final Record request) throws Exception {
+        doReturn("0")
+                .when(tokenProvider)
+                .extractSubject("fakeToken");
+
+        return mockMvc.perform(put(path)
                         .header(HttpHeaders.AUTHORIZATION, "Bearer fakeToken")
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON))

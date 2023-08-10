@@ -92,4 +92,43 @@ public class PostControllerTest extends ControllerTestBase {
                     .andExpect(jsonPath("detail", stringContainsInOrder("페이지 크기", "1 이상")));
         }
     }
+
+    @DisplayName("특정 게시글 수정")
+    @Nested
+    class modifyById {
+
+        @DisplayName("제목이 255자를 초과하면 Bad Request를 응답한다.")
+        @Test
+        void returnsBadRequest_whenTitleTooLong() throws Exception {
+            // given
+            final String longTitle = "a".repeat(256);
+
+            // when
+            final PostRequest request = new PostRequest(longTitle, "some content...");
+            final ResultActions resultActions = performPutWithToken(BASE_URI + "/0", request);
+
+            // then
+            resultActions
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("title").value("요청 본문이 올바르지 않습니다."))
+                    .andExpect(jsonPath("detail", stringContainsInOrder("게시글 제목", "255자 이하")));
+        }
+
+        @DisplayName("본문이 65535자를 초과하면 Bad Request를 응답한다.")
+        @Test
+        void returnsBadRequest_whenContentTooLong() throws Exception {
+            // given
+            final String longContent = "a".repeat(65536);
+
+            // when
+            final PostRequest request = new PostRequest("some title", longContent);
+            final ResultActions resultActions = performPutWithToken(BASE_URI + "/0", request);
+
+            // then
+            resultActions
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("title").value("요청 본문이 올바르지 않습니다."))
+                    .andExpect(jsonPath("detail", stringContainsInOrder("게시글 본문", "65535자 이하")));
+        }
+    }
 }

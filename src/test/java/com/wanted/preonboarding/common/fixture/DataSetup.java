@@ -27,6 +27,10 @@ public class DataSetup {
 
     public Post savePost() {
         final Member writer = saveMember("writer@test.com", "test1234");
+        return savePost(writer);
+    }
+
+    public Post savePost(final Member writer) {
         final Post post = Post.ofNew("some title", "some contents...", writer.getId());
         return postRepository.save(post);
     }
