@@ -56,4 +56,19 @@ public class PostAcceptanceTest extends AcceptanceTestBase {
                 .body("page.hasNext", equalTo(true))
                 .body("posts.id", contains(expected1.getId().intValue(), expected2.getId().intValue()));
     }
+
+    @DisplayName("특정 게시글을 id로 조회한다.")
+    @Test
+    void findById() {
+        // given
+        final Post expected = dataSetup.savePost();
+
+        // when
+        final String path = BASE_URI + "/" + expected.getId();
+        final ValidatableResponse response = get(path);
+
+        // then
+        response.statusCode(HttpStatus.OK.value())
+                .body("id", equalTo(expected.getId().intValue()));
+    }
 }

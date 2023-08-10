@@ -2,6 +2,7 @@ package com.wanted.preonboarding.post.controller;
 
 import com.wanted.preonboarding.member.annotation.AuthenticationPrincipal;
 import com.wanted.preonboarding.post.dto.PostRequest;
+import com.wanted.preonboarding.post.dto.PostResponse;
 import com.wanted.preonboarding.post.dto.PostsResponse;
 import com.wanted.preonboarding.post.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,6 +19,7 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,5 +67,11 @@ public class PostController {
                                  @RequestParam(required = false, defaultValue = DEFAULT_SIZE)
                                  @Positive(message = SIZE_UNDER_ONE_MESSAGE) final int size) {
         return postService.findAll(page, size);
+    }
+
+    @Operation(summary = "특정 게시글 조회")
+    @GetMapping("/{postId}")
+    public PostResponse findById(@PathVariable final Long postId) {
+        return postService.findById(postId);
     }
 }
