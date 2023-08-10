@@ -37,4 +37,14 @@ public class PostService {
                 .orElseThrow(() -> new PostNotFoundException("해당 id의 게시글을 찾을 수 없습니다."));
         return PostResponse.from(found);
     }
+
+    @Transactional
+    public void modifyById(final Long postId, final Long writerId, final PostRequest request) {
+        final Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException("해당 id의 게시글을 찾을 수 없습니다."));
+        post.validateWriter(writerId);
+
+        post.changeTitle(request.title());
+        post.changeContent(request.content());
+    }
 }
