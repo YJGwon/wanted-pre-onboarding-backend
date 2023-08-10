@@ -38,7 +38,7 @@ class PostRepositoryTest {
 
     @DisplayName("게시글 목록을 페이지 단위로 조회한다.")
     @Test
-    void findAll_perPage() {
+    void findAll() {
         // given
         final Member writer = memberRepository.save(Member.ofNew("test@test.com", "test1234"));
         // 게시글 3개 저장

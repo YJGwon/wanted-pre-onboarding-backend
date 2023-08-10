@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 import com.wanted.preonboarding.common.exception.ClientException;
+import jakarta.validation.ConstraintViolationException;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -20,6 +21,14 @@ public class ControllerAdvice {
     public ErrorResponse handleClientException(final ClientException e) {
         return ErrorResponse.builder(e, BAD_REQUEST, e.getMessage())
                 .title(e.getTitle())
+                .build();
+    }
+
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ErrorResponse handleParameterException(final ConstraintViolationException e) {
+        return ErrorResponse.builder(e, BAD_REQUEST, e.getMessage())
+                .title("요청 파라미터값이 올바르지 않습니다.")
                 .build();
     }
 
