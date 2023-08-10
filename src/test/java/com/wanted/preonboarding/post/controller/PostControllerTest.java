@@ -53,4 +53,43 @@ public class PostControllerTest extends ControllerTestBase {
                     .andExpect(jsonPath("detail", stringContainsInOrder("게시글 본문", "65535자 이하")));
         }
     }
+
+    @DisplayName("게시글 목록 페이지 단위 조회")
+    @Nested
+    class findAll {
+
+        private static final String PAGE_PARAM_FORMAT = "?page=%d&size=%d";
+
+        @DisplayName("페이지 번호가 0보다 작으면 Bad Request를 응답한다.")
+        @Test
+        void returnsBadRequest_whenPageIsUnderZero() throws Exception {
+            // given
+            final int pageUnderZero = -1;
+
+            // when
+            final String params = String.format(PAGE_PARAM_FORMAT, pageUnderZero, 1);
+            final ResultActions resultActions = performGet(BASE_URI + params);
+
+            // then
+            resultActions.andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("title").value("요청 파라미터값이 올바르지 않습니다."))
+                    .andExpect(jsonPath("detail", stringContainsInOrder("페이지 번호", "0 이상")));
+        }
+
+        @DisplayName("페이지 크기가 1보다 작으면 Bad Request를 응답한다.")
+        @Test
+        void returnsBadRequest_whenSizeIsUnderOne() throws Exception {
+            // given
+            final int sizeUnderOne = 0;
+
+            // when
+            final String params = String.format(PAGE_PARAM_FORMAT, 0, sizeUnderOne);
+            final ResultActions resultActions = performGet(BASE_URI + params);
+
+            // then
+            resultActions.andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("title").value("요청 파라미터값이 올바르지 않습니다."))
+                    .andExpect(jsonPath("detail", stringContainsInOrder("페이지 크기", "1 이상")));
+        }
+    }
 }

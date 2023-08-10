@@ -4,6 +4,8 @@ import static org.springframework.transaction.annotation.Propagation.REQUIRES_NE
 
 import com.wanted.preonboarding.member.domain.Member;
 import com.wanted.preonboarding.member.repository.MemberRepository;
+import com.wanted.preonboarding.post.domain.Post;
+import com.wanted.preonboarding.post.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +17,17 @@ public class DataSetup {
     @Autowired
     private MemberRepository memberRepository;
 
+    @Autowired
+    private PostRepository postRepository;
+
     public Member saveMember(final String email, final String password) {
         final Member member = Member.ofNew(email, password);
         return memberRepository.save(member);
+    }
+
+    public Post savePost() {
+        final Member writer = saveMember("writer@test.com", "test1234");
+        final Post post = Post.ofNew("some title", "some contents...", writer.getId());
+        return postRepository.save(post);
     }
 }

@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.common.testbase;
 
 import static org.mockito.Mockito.doReturn;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
@@ -34,19 +35,25 @@ public abstract class ControllerTestBase {
     @Autowired
     private ObjectMapper objectMapper;
 
-    protected ResultActions performPost(final String uri, final Record request) throws Exception {
-        return mockMvc.perform(post(uri)
+    protected ResultActions performGet(final String path) throws Exception {
+        return mockMvc.perform(get(path)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print());
+    }
+
+    protected ResultActions performPost(final String path, final Record request) throws Exception {
+        return mockMvc.perform(post(path)
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print());
     }
 
-    protected ResultActions performPostWithToken(final String uri, final Record request) throws Exception {
+    protected ResultActions performPostWithToken(final String path, final Record request) throws Exception {
         doReturn("0")
                 .when(tokenProvider)
                 .extractSubject("fakeToken");
 
-        return mockMvc.perform(post(uri)
+        return mockMvc.perform(post(path)
                         .header(HttpHeaders.AUTHORIZATION, "Bearer fakeToken")
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON))

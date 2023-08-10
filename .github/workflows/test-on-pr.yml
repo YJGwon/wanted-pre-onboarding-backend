@@ -24,7 +24,6 @@ jobs:
         with:
           distribution: 'oracle'
           java-version: 17
-          cache: gradle
 
       # Gradle cache 사용
       - name: Use Gradle Cache
