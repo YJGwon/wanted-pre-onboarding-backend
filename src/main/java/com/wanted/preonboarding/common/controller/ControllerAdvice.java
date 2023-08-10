@@ -1,10 +1,12 @@
 package com.wanted.preonboarding.common.controller;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 import com.wanted.preonboarding.common.exception.ClientException;
+import com.wanted.preonboarding.common.exception.NotAllowedException;
 import com.wanted.preonboarding.common.exception.NotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import java.util.Objects;
@@ -26,14 +28,6 @@ public class ControllerAdvice {
                 .build();
     }
 
-    @ExceptionHandler(NotFoundException.class)
-    public ErrorResponse handleNotFoundException(final NotFoundException e) {
-        return ErrorResponse.builder(e, NOT_FOUND, e.getMessage())
-                .title(e.getTitle())
-                .build();
-    }
-
-
     @ExceptionHandler(ConstraintViolationException.class)
     public ErrorResponse handleParameterException(final ConstraintViolationException e) {
         return ErrorResponse.builder(e, BAD_REQUEST, e.getMessage())
@@ -46,6 +40,20 @@ public class ControllerAdvice {
         final String message = extractMessage(e);
         return ErrorResponse.builder(e, BAD_REQUEST, message)
                 .title("요청 본문이 올바르지 않습니다.")
+                .build();
+    }
+
+    @ExceptionHandler(NotAllowedException.class)
+    public ErrorResponse handleNotAllowedException(final NotAllowedException e) {
+        return ErrorResponse.builder(e, FORBIDDEN, e.getMessage())
+                .title(e.getTitle())
+                .build();
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ErrorResponse handleNotFoundException(final NotFoundException e) {
+        return ErrorResponse.builder(e, NOT_FOUND, e.getMessage())
+                .title(e.getTitle())
                 .build();
     }
 
