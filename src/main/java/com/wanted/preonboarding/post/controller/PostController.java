@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -96,5 +97,18 @@ public class PostController {
                            @AuthenticationPrincipal final Long writerId,
                            @RequestBody @Valid final PostRequest request) {
         postService.modifyById(postId, writerId, request);
+    }
+
+    @Authentication
+    @Operation(summary = "특정 게시글 삭제")
+    @ApiResponse(
+            responseCode = "403", description = "작성자 아님",
+            content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+    )
+    @DeleteMapping("/{postId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById(@PathVariable final Long postId,
+                           @AuthenticationPrincipal final Long writerId) {
+        postService.deleteById(postId, writerId);
     }
 }
