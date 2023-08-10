@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.post.controller;
 
+import com.wanted.preonboarding.member.annotation.Authentication;
 import com.wanted.preonboarding.member.annotation.AuthenticationPrincipal;
 import com.wanted.preonboarding.post.dto.PostRequest;
 import com.wanted.preonboarding.post.dto.PostResponse;
@@ -15,15 +16,18 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -40,6 +44,7 @@ public class PostController {
 
     private final PostService postService;
 
+    @Authentication
     @Operation(summary = "게시글 생성")
     @ApiResponse(
             responseCode = "400", description = "제목 또는 본문 최대 길이 초과",
@@ -73,5 +78,23 @@ public class PostController {
     @GetMapping("/{postId}")
     public PostResponse findById(@PathVariable final Long postId) {
         return postService.findById(postId);
+    }
+
+    @Authentication
+    @Operation(summary = "특정 게시글 수정")
+    @ApiResponse(
+            responseCode = "400", description = "제목 또는 본문 최대 길이 초과",
+            content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+    )
+    @ApiResponse(
+            responseCode = "403", description = "작성자 아님",
+            content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+    )
+    @PutMapping("/{postId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void modifyById(@PathVariable final Long postId,
+                           @AuthenticationPrincipal final Long writerId,
+                           @RequestBody @Valid final PostRequest request) {
+        postService.modifyById(postId, writerId, request);
     }
 }
