@@ -1,4 +1,9 @@
 package com.wanted.preonboarding.member.dto;
 
-public record LoginResponse(String accessToken) {
+import io.swagger.v3.oas.annotations.media.Schema;
+
+public record LoginResponse(
+        @Schema(description = "access token")
+        String accessToken
+) {
 }
