@@ -2,11 +2,65 @@
 
 이름 : 권예진
 
-## 실행 방법
+## API 명세
+
+[swagger-ui](http://3.36.77.210:8080/swagger-ui/index.html)
 
 ## DB 테이블 구조
 
+![wanted-pre-erd](https://github.com/YJGwon/wanted-pre-onboarding-backend/assets/89305335/870fbf1a-4555-4b05-bd64-694699ac97b7)
+
+## 배포 환경
+
+![image](https://github.com/YJGwon/wanted-pre-onboarding-backend/assets/89305335/5208e47d-10e6-436d-a123-6bd94345682a)
+주소: http://3.36.77.210:8080
+
+## 실행 방법
+
+### 원격 endpoint 호출
+
+[swagger-ui](http://3.36.77.210:8080/swagger-ui/index.html)
+
+### local 환경 실행
+
+#### 1. 소스 코드 clone
+
+```shell
+git clone -b main --single-branch https://github.com/YJGwon/wanted-pre-onboarding-backend.git
+```
+
+#### 2. gradle build
+
+```shell
+cd wanted-pre-onboarding-backend
+chmod 755 gradlew
+./gradlew clean build
+```
+
+#### 3. jar 파일 실행
+
+```shell
+cd build/libs
+nohup java -jar pre-onboarding-0.0.1-SNAPSHOT.jar 1>{로그파일명} 2>&1 &
+```
+
+#### 4. 엔드포인트 호출
+
+서버 실행 된 상태에서 `localhost:8080/swagger-ui/index.html`
+
 ## 데모 영상
+
+- [정상 동작 flow](https://drive.google.com/file/d/1TALotoLUxl5XH76cuxsYpZe6M85O6m8Z/view?usp=drive_link)
+  - 회원가입 -> 로그인 -> 게시글 생성 -> 목록, 특정 조회 -> 수정 -> 삭제
+- [회원가입 예외처리](https://drive.google.com/file/d/1mQmQdeb_r0rKQDOhQj9ZPbQTXA903z0p/view?usp=drive_link)
+  - 아이디, 비밀번호 입력값 예외 처리
+- [로그인 예외처리](https://drive.google.com/file/d/1_rSoG3mX8qUDNOB4-YGNYfYqotEZfg6a/view?usp=drive_link)
+  - 아이디, 비밀번호 입력값 예외 처리
+  - 잘못된 아이디 또는 비밀번호 로그인 실패 처리
+- [목록 조회 pagination](https://drive.google.com/file/d/10r-Z1_Bpr5Vp9-dLGiL1sTrHJrPR0Qh1/view?usp=drive_link)
+  - 총 6개 게시물, 4 size 페이지 두 개로 나누어 조회
+- [수정, 삭제 예외처리](https://drive.google.com/file/d/1QlB1QANpkqHgnsPv_0NYAAqweYuLWShY/view?usp=drive_link)
+  - 작성자가 아닌 사용자가 수정, 삭제할 때 예외 처리
 
 ## 구현 방법
 
@@ -41,6 +95,4 @@
 - Annotation 검사 시 `getClass`아닌 `getBeanType`사용
   - `getBeanType`사용하면 proxy 객체일 경우에도 target instance의 type을 반환
   - `getClass`사용하면 Controller 객체에 AOP 적용된 경우 class level의 annotation 가져오지 못함
-
-## API 명세
 
