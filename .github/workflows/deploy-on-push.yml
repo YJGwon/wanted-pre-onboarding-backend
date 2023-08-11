@@ -2,7 +2,7 @@ name: Deploy spring boot app on push
 on:
   push:
     branches:
-      - 'feature/deploy-on-push'
+      - 'main'
 
 jobs:
   build:
