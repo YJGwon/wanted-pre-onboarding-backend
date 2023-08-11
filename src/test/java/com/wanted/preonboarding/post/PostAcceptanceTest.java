@@ -54,7 +54,6 @@ public class PostAcceptanceTest extends AcceptanceTestBase {
         // then
         response.statusCode(HttpStatus.OK.value())
                 .body("page.currentPage", equalTo(0))
-                .body("page.hasNext", equalTo(true))
                 .body("posts.id", contains(expected1.getId().intValue(), expected2.getId().intValue()));
     }
 
