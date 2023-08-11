@@ -34,7 +34,7 @@ public class MemberController {
     )
     @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void create(@RequestBody @Valid MemberRequest request) {
+    public void create(@RequestBody @Valid final MemberRequest request) {
         memberService.create(request);
     }
 
@@ -44,7 +44,7 @@ public class MemberController {
             content = @Content(schema = @Schema(implementation = ProblemDetail.class))
     )
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody @Valid LoginRequest request) {
+    public LoginResponse login(@RequestBody @Valid final LoginRequest request) {
         return memberService.login(request);
     }
 }
