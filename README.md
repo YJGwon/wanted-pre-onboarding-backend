@@ -8,8 +8,7 @@
 
 ## DB 테이블 구조
 
-![wanted-pre-erd](https://github.com/YJGwon/wanted-pre-onboarding-backend/assets/89305335/870fbf1a-4555-4b05-bd64-694699ac97b7)
-
+![wanted-pre-erd](https://github.com/YJGwon/wanted-pre-onboarding-backend/assets/89305335/ae5f1ecf-b2c1-4129-a555-e756aa9c481b)
 ## 배포 환경
 
 ![image](https://github.com/YJGwon/wanted-pre-onboarding-backend/assets/89305335/5208e47d-10e6-436d-a123-6bd94345682a)
