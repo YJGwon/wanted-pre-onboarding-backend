@@ -54,6 +54,7 @@ public class PostController {
             content = @Content(schema = @Schema(implementation = ProblemDetail.class))
     )
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> create(@RequestBody @Valid final PostRequest request,
                                        @AuthenticationPrincipal final Long writerId) {
         final Long postId = postService.create(request, writerId);
