@@ -11,7 +11,7 @@
 ![wanted-pre-erd](https://github.com/YJGwon/wanted-pre-onboarding-backend/assets/89305335/ae5f1ecf-b2c1-4129-a555-e756aa9c481b)
 ## 배포 환경
 
-![image](https://github.com/YJGwon/wanted-pre-onboarding-backend/assets/89305335/5208e47d-10e6-436d-a123-6bd94345682a)
+![image](https://github.com/YJGwon/wanted-pre-onboarding-backend/assets/89305335/1e3e2954-383d-4a0d-812e-d9d0133799c5)
 주소: http://3.36.77.210:8080
 
 ## 실행 방법
