@@ -4,7 +4,7 @@
 
 ## API 명세
 
-[swagger-ui](http://3.36.77.210:8080/swagger-ui/index.html)
+~swagger-ui~ 선발 후 서버 종료
 
 ## DB 테이블 구조
 
@@ -12,13 +12,13 @@
 ## 배포 환경
 
 ![image](https://github.com/YJGwon/wanted-pre-onboarding-backend/assets/89305335/1e3e2954-383d-4a0d-812e-d9d0133799c5)
-주소: http://3.36.77.210:8080
+~주소:~ 선발 후 서버 종료
 
 ## 실행 방법
 
 ### 원격 endpoint 호출
 
-[swagger-ui](http://3.36.77.210:8080/swagger-ui/index.html)
+~swagger-ui~ 선발 후 서버 종료
 
 ### local 환경 실행
 
